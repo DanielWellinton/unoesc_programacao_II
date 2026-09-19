@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabalho de PHP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+            padding: 30px;
+            margin: 0;
+        }
+
+        .header {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .panel {
+            background: #fff;
+            border-radius: 8px;
+            border-top: 4px solid #3498db;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-header {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .panel-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .panel-body {
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .grid-2-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Trabalho de PHP</h1>
+        <p>Data e Hora: <?= date('d/m/Y H:i:s') ?></p>
+    </div>
+
+    <div class="container">
+
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Atividade 01 - Classe Carro</h3>
+            </div>
+            <div class="panel-body grid-2-col">
+                <div class="coluna">
+                    <h4>Veículo 1</h4>
+                    <?= $carro1->exibirInformacoes() ?>
+                </div>
+
+                <div class="coluna">
+                    <h4>Veículo 2</h4>
+                    <?= $carro2->exibirInformacoes() ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Atividade 02 - Classe Aluno</h3>
+            </div>
+            <div class="panel-body">
+                <strong><?= $aluno1->getNome() ?>: </strong><?= $aluno1->verificarAprovacao() ? "Aprovado" : "Reprovado" ?>
+                <br><strong><?= $aluno2->getNome() ?>: </strong><?= $aluno2->verificarAprovacao() ? "Aprovado" : "Reprovado" ?>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Atividade 03 - Classe ContaBancaria</h3>
+            </div>
+            <div class="panel-body grid-2-col">
+                <div class="coluna">
+                    <h4>Movimentação 1</h4>
+                    <strong>Titular: </strong><?= $contaBancaria->getTitular() ?><br>
+                    <strong>Depositar: </strong>R$ 4.000,00<br>
+                    <?= $contaBancaria->depositar(4000) ?>
+                    <strong>Saldo: </strong><?= $contaBancaria->exibirSaldo() ?>
+                </div>
+
+                <div class="coluna">
+                    <h4>Movimentação 2</h4>
+                    <strong>Titular: </strong><?= $contaBancaria->getTitular() ?><br>
+                    <strong>Sacar: </strong>R$ 3.500,00<br>
+                    <?= $contaBancaria->sacar(3500) ?>
+                    <strong>Saldo: </strong><?= $contaBancaria->exibirSaldo() ?>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Atividade 04 - Classe Calculadora</h3>
+            </div>
+            <div class="panel-body">
+                <?php $calc = new Calculadora(); ?>
+                <strong>Adição (10 + 5): </strong><?= $calc->operacaoMatematica(1, 10, 5) ?><br>
+                <strong>Subtração (15 - 5): </strong><?= $calc->operacaoMatematica(2, $calc->getResultado(), 5) ?><br>
+                <strong>Multiplicação (10 x 5): </strong><?= $calc->operacaoMatematica(3, $calc->getResultado(), 5) ?><br>
+                <strong>Divisão (50 / 5): </strong><?= $calc->operacaoMatematica(4, $calc->getResultado(), 5) ?>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Atividade 05 - Classe AgendaContato</h3>
+            </div>
+            <div class="panel-body grid-2-col">
+                <?php foreach ($agendaContato->getListaContatos() as $index => $contato): ?>
+                    <div class="coluna">
+                        <h4>Contato <?= sprintf('%03d', $index + 1) ?></h4>
+                        <?= $contato ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Atividade 06 - Classe Retangulo</h3>
+            </div>
+            <div class="panel-body grid-2-col">
+                <div class="coluna">
+                    <h4>Retângulo 1</h4>
+                    <strong>Largura: </strong><?= $retangulo->getLargura() ?><br>
+                    <strong>Altura: </strong><?= $retangulo->getAltura() ?><br>
+                    <strong>Área: </strong><?= $retangulo->getArea() ?><br>
+                    <strong>Perímetro: </strong><?= $retangulo->getPerimetro() ?><br>
+                </div>
+                <?= $retangulo->setLargura(10) ?>
+                <?= $retangulo->setAltura(6) ?>
+                <div class="coluna">
+                    <h4>Retângulo 2</h4>
+                    <strong>Largura: </strong><?= $retangulo->getLargura() ?><br>
+                    <strong>Altura: </strong><?= $retangulo->getAltura() ?><br>
+                    <strong>Área: </strong><?= $retangulo->getArea() ?><br>
+                    <strong>Perímetro: </strong><?= $retangulo->getPerimetro() ?>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Atividade 07 - Classe Funcionario</h3>
+            </div>
+            <div class="panel-body">
+                <strong>Funcionário: </strong><?= $funcionario->getNome() ?><br>
+                <strong>Salário: </strong><?= $funcionario->getSalario() ?><br>
+                <?= $funcionario->reajusteSalarioConformePorcentagem(20) ?>
+                <strong>Salário + 20% de aumento: </strong><?= $funcionario->getSalario() ?><br>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Atividade 08 - Classe Carrinho e Item</h3>
+            </div>
+            <div class="panel-body">
+                <strong>Carrinho 001</strong>
+                <hr>
+                <?php foreach ($carrinho->getItems() as $key => $item): ?>
+                    <?= $item ?>
+                    <hr>
+                <?php endforeach; ?>
+                <strong>Total: </strong><?= $carrinho->getTotalFormatado() ?>
+                <hr>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Exercício 09 - Classe Livro (Publicados após 2015)</h3>
+            </div>
+            <div class="panel-body grid-2-col">
+                <?php foreach ($livrosRecentes as $index => $livro): ?>
+                    <div class="coluna">
+                        <h4>Livro <?= sprintf('%03d', $index + 1) ?></h4>
+                        <?= $livro ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                <h3>Exercício 10 - Conversor de Temperatura</h3>
+            </div>
+            <div class="panel-body grid-2-col">
+                <?php $conversor = new ConversorTemperatura(); ?>
+
+                <div class="coluna">
+                    <h4>Celsius para Fahrenheit</h4>
+                    <strong>25 °C equivalem a: </strong>
+                    <?= number_format($conversor->celsiusParaFahrenheit(25), 1, ',', '.') ?> °F<br>
+
+                    <strong>0 °C equivalem a: </strong>
+                    <?= number_format($conversor->celsiusParaFahrenheit(0), 1, ',', '.') ?> °F<br>
+
+                    <strong>100 °C equivalem a: </strong>
+                    <?= number_format($conversor->celsiusParaFahrenheit(100), 1, ',', '.') ?> °F
+                </div>
+
+                <div class="coluna">
+                    <h4>Fahrenheit para Celsius</h4>
+                    <strong>77 °F equivalem a: </strong>
+                    <?= number_format($conversor->fahrenheitParaCelsius(77), 1, ',', '.') ?> °C<br>
+
+                    <strong>32 °F equivalem a: </strong>
+                    <?= number_format($conversor->fahrenheitParaCelsius(32), 1, ',', '.') ?> °C<br>
+
+                    <strong>212 °F equivalem a: </strong>
+                    <?= number_format($conversor->fahrenheitParaCelsius(212), 1, ',', '.') ?> °C
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

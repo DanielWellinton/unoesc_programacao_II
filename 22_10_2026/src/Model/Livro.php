@@ -25,6 +25,11 @@ class Livro
         return $this->id;
     }
 
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
     public function getTitulo(): string
     {
         return $this->titulo;
@@ -55,7 +60,7 @@ class Livro
         $this->preco = $preco;
     }
 
-    public function getPreco(): int
+    public function getPreco(): float
     {
         return $this->preco;
     }

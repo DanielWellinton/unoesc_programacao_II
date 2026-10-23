@@ -8,12 +8,61 @@ class LivroRepository
         $this->pdo = $pdo;
     }
 
-    public function buscarPorId(int $id): ?array
+    /**
+     * @return Livro[]|null
+     */
+    public function getAll(): ?array
     {
-        $stmt = $this->pdo->prepare('SELECT id, titulo, preco FROM livro WHERE id = :id');
+        $stmt = $this->pdo->prepare('SELECT id, titulo, isbn, ano_publicacao, preco, quantidade, id_autor FROM livro ORDER BY titulo');
+        
+        $stmt->execute(); 
+        
+        $linhas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        if (empty($linhas)) {
+            return null;
+        }
+
+        $livros = [];
+        foreach ($linhas as $linha) {
+            $livro = new Livro(
+                $linha['titulo'],
+                $linha['isbn'],
+                (int)$linha['ano_publicacao'],
+                (float)$linha['preco'],
+                (int)$linha['id_autor'],
+                (int)$linha['quantidade']
+            );
+            $livro->setId((int)$linha['id']);
+            
+            $livros[] = $livro;
+        }
+
+        return $livros;
+    }
+
+    public function buscarPorId(int $id): ?Livro
+    {
+        $stmt = $this->pdo->prepare('SELECT id, titulo, isbn, ano_publicacao, preco, quantidade, id_autor FROM livro WHERE id = :id');
         $stmt->execute(['id' => $id]);
-        $linha = $stmt->fetch();
-        return $linha === false ? null : $linha;
+        
+        $linha = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($linha === false) {
+            return null;
+        }
+
+        $livro = new Livro(
+            $linha['titulo'],
+            $linha['isbn'],
+            (int)$linha['ano_publicacao'],
+            (float)$linha['preco'],
+            (int)$linha['id_autor'],
+            (int)$linha['quantidade']
+        );
+        $livro->setId((int)$linha['id']);
+
+        return $livro;
     }
 
     public function create(string $titulo, string $isbn, int $anoPublicacao, float $preco, int $idAutor, int $quantidade = 0)
@@ -35,7 +84,6 @@ class LivroRepository
             $stmt->execute();
 
             return true;
-
         } catch (\PDOException $e) {
             if ($e->getCode() === '23000') {
                 throw new \Exception("Erro: O ISBN '{$isbn}' já está cadastrado ou o ID do autor é inválido.");

@@ -4,6 +4,8 @@ services:
   app:
     build: .
     container_name: php_app
+    env_file:
+      - .env
     volumes:
       - ./:/var/www/html
 

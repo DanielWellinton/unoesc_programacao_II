@@ -18,22 +18,29 @@ class LivroRepository
 
     public function create(string $titulo, string $isbn, int $anoPublicacao, float $preco, int $idAutor, int $quantidade = 0)
     {
-        $stmt = $this->pdo->prepare(
-            'INSERT INTO livro
-            (titulo, isbn, ano_publicacao, preco, quantidade, id_autor)
-            VALUES (:titulo, :isbn, :ano_publicacao, :preco, :quantidade, :id_autor)'
-        );
-        $stmt->bindParam(':titulo', $titulo,PDO::PARAM_STR);
-        $stmt->bindParam(':isbn', $isbn,PDO::PARAM_STR);
-        $stmt->bindParam(':ano_publicacao', $anoPublicacao,PDO::PARAM_INT);
-        $stmt->bindParam(':preco', $preco,PDO::PARAM_STR);
-        $stmt->bindParam(':id_autor', $idAutor,PDO::PARAM_INT);
-        $stmt->bindParam(':quantidade', $quantidade,PDO::PARAM_INT);
+        try {
+            $stmt = $this->pdo->prepare(
+                'INSERT INTO livro
+                (titulo, isbn, ano_publicacao, preco, quantidade, id_autor)
+                VALUES (:titulo, :isbn, :ano_publicacao, :preco, :quantidade, :id_autor)'
+            );
 
-        if ($stmt->execute()) {
-            return ['status' => true, 'message' => 'Tarefa criada com sucesso!'];
-        } else {
-            return ['status' => false, 'message' => 'Erro ao criar tarefa.'];
+            $stmt->bindParam(':titulo', $titulo, PDO::PARAM_STR);
+            $stmt->bindParam(':isbn', $isbn, PDO::PARAM_STR);
+            $stmt->bindParam(':ano_publicacao', $anoPublicacao, PDO::PARAM_INT);
+            $stmt->bindParam(':preco', $preco, PDO::PARAM_STR);
+            $stmt->bindParam(':quantidade', $quantidade, PDO::PARAM_INT);
+            $stmt->bindParam(':id_autor', $idAutor, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            return true;
+
+        } catch (\PDOException $e) {
+            if ($e->getCode() === '23000') {
+                throw new \Exception("Erro: O ISBN '{$isbn}' já está cadastrado ou o ID do autor é inválido.");
+            }
+            throw new \Exception("Erro ao cadastrar livro: " . $e->getMessage());
         }
     }
 }
